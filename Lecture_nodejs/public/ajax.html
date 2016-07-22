@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax Chat</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />
+</head>
+<body>
+    <div class="container-fluid">
+      <div class="row">
+        <h1>Ajax chat exemple</h1>
+      </div>
+      <div class="row">
+        <div class="col-sm-9 col-sm-offset-2">
+          
+          <div id="messages" style= "height: 280px; overflow: auto"></div>
+          
+          <div>
+		        <textarea id="text" cols="50" rows="2"></textarea>
+	        </div>
+	        
+        	<div>
+        		<input type="text" placeholder="Your name" id="nameInput" />
+        		<button type="button" class="btn btn-default" id="textSubmit">Send</button>
+        	</div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+      (function() {
+			  var nameInput = $('#nameInput');
+			  var text = $('#text');
+			  var textSubmit = $('#textSubmit');
+			  var messages = $('#messages');
+	      
+  		  textSubmit.click(function() {
+  			  var data = {
+  				  name: nameInput.val() || 'Anonym',
+  				  text: text.val()
+  			  };
+  			  text.val('');
+  			  $.post('/messages', data, "json");
+  		  });
+  		  
+  		  var getData = function() {
+  			  
+  			  $.getJSON('/messages', function(msg) {
+  			    messages.html('');
+  				  for(var i in msg) {
+  					  if(msg.hasOwnProperty(i)) {
+  						  messages.append($('<p>').text(msg[i].name + ': ' + msg[i].text));				
+  					  }
+  				  }
+  			  });
+  		  };
+  		  getData();
+  		
+  		  setInterval(function() {
+  			  getData();
+  		  }, 4000);
+		  
+	  })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket chat</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" />
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <h1>Socket chat exemple</h1>
+    </div>
+    <div class="row">
+      <div class="col-sm-9 col-sm-offset-2">
+          
+        <div id="messages" style= "height: 280px; overflow: auto"></div>
+          
+        <div>
+		      <textarea id="text" cols="50" rows="2"></textarea>
+	      </div>
+	        
+        <div>
+        	<input type="text" placeholder="Your name" id="nameInput" />
+        	<button type="button" class="btn btn-default" id="textSubmit">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript">
+      (function() {
+			  var nameInput = $('#nameInput');
+			  var text = $('#text');
+			  var textSubmit = $('#textSubmit');
+			  var messages = $('#messages');
+			  var socket = io.connect();
+
+	      
+  		  textSubmit.click(function() {
+  			  var data = {
+  				  name: nameInput.val() || 'Anonym',
+  				  text: text.val()
+  			  };
+  			  text.val('');
+  			  socket.emit('msg', data);
+  		  });
+  		  
+  		  socket.on('history', function(msg) {
+  			    messages.html('');
+  			    var msg = JSON.parse(msg);
+  				  for(var i in msg) {
+  					  if(msg.hasOwnProperty(i)) {
+  						  messages.append($('<p>').text(msg[i].name + ': ' + msg[i].text));				
+  					  }
+  				  }
+  			  });
+  			  
+  			socket.on('msg', function(msg) {
+  			  var msg = JSON.parse(msg);
+  			  messages.append($('<p>').text(msg[i].name + ': ' + msg[i].text));
+  			});
+  		  
+	  })();
+    </script>
+</body>
+</html>
