@@ -1,0 +1,8 @@
+.addForm {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.addForm input[type="submit"] {
+  margin-left: 10px;
+}
