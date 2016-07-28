@@ -1,0 +1,7 @@
+.list {
+  min-height: 50px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px dashed;
+}
